@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Real Time and Date with See-through Image</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style type="text/css">
+    html {
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      color: white;
+      font-family: sans-serif;
+    }
+
+    #container {
+      position: center;
+    }
+
+    .time-container {
+      position: absolute;
+      top: 26.46%;
+      left: 71.05%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      font-size: 1.6rem;
+      text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+      background-color: rgb(99.6%, 69.4%, 3.5%, 0.7);
+
+
+      padding: 31.9px;
+      border-radius: 10px;
+      width: 139px;
+      height: 162px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .time-container h1 {
+      margin: 0;
+      top: 70%;
+
+    }
+
+    .time-container h2 {
+      margin: 0;
+      top: 50%;
+
+    }
+
+    .time-container.show-time {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out, transform 2s forwards;
+      animation: rise 2s ease-in-out forwards;
+      transform-origin: bottom center;
+    }
+    .time-container.hide-time {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out; /* Changed timing here */
+    }
+
+    @keyframes rise {
+      from {
+        height: 162px;
+        border-radius: 1%;
+        opacity: 0;
+      }
+
+      to {
+        height: 162px;
+        border-radius: 10px;
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+
+  <div id="container">
+    <div id="face-pic">
+      <img src="tom1.jpeg" alt="Your Face" width="100%" onclick="showTime()" />
+    </div>
+    <div class="time-container" id="show-time" onclick="hideTime()">
+      <h2 id="real-date"></h2>
+      <h1 id="real-time"></h1>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function updateTime() {
+      const currentDateTime = new Date();
+      const monthNames = [
+        "January",
+        "FEB",
+        "March",
+        "April",
+        "May",
+        "JUN",
+        "July",
+        "August",
+        "SEP",
+        "October",
+        "NOV",
+        "DEC",
+      ];
+
+      const currentMonth = monthNames[currentDateTime.getMonth()];
+      const currentDay = currentDateTime.getDate();
+      const currentYear = currentDateTime.getFullYear();
+      const currentDate = currentDay + " " + currentMonth;
+      let hours = currentDateTime.getHours();
+      let minutes = currentDateTime.getMinutes();
+      let seconds = currentDateTime.getSeconds();
+
+      if (hours < 10) {hours = "0" + hours;}
+      if (minutes < 10) {minutes = "0" + minutes;}
+      if (seconds < 10) {seconds = "0" + seconds;}
+      const currentTime = hours + ":" + minutes;
+      document.getElementById("real-date").textContent = currentDate;
+      document.getElementById("real-time").textContent = currentTime;
+    }
+
+    function showTime() {
+      let timeContainer = document.querySelector(".time-container");
+      timeContainer.style.display = "flex";
+      timeContainer.classList.add("show-time");
+
+      setTimeout(function() {
+        timeContainer.classList.remove("show-time");
+        timeContainer.classList.add("hide-time");
+        setTimeout(function() {
+          timeContainer.style.display = "none";
+          timeContainer.classList.remove("hide-time");
+        }, 3500); /* Changed timing here */
+      }, 4000);
+    }
+
+    setInterval(updateTime, 1000);
+  </script>
